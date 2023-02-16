@@ -1,8 +1,7 @@
-# tino-momo-woocommerce
-/*
-Plugin Name:  Momo.vn Payment Gateway for WooCommerce
-Plugin URI: https://tinohost.com/plugins/momo-payment-gateway-for-woocommerce
-Description: Momo.vn Pugin Payment Gateway (Tài khoản doanh nghiệp), Plugin được chia sẻ bởi TinoHost.
+# Plugin Name:  Momo.vn Payment Gateway for WooCommerce
+
+Plugin URI: https://wiki.tino.org/plugins/momo-payment-gateway-for-woocommerce
+Description: Pugin Payment Gateway Mo Mo - Tài khoản doanh nghiệp. API v2
 Contributors: Tran Binh, Webico, TinoHost
 Installation:
 Version: 1.0.0
@@ -10,11 +9,10 @@ Author: Tino Team
 Text Domain: tino
 Domain Path: /languages
 Tags: Webico.vn, Tran Binh, TinoHost
-Tested up to: 5.3.2
-Requires PHP: 5.6
+Tested up to: 6.1.1
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Donate link: https://www.webico.vn
+Donate link: https://tinohost.com
 
  Plugin được chia sẻ bởi TinoHost.
-*/
