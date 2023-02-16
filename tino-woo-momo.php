@@ -292,16 +292,16 @@
                      return false;
                  }
                  $result = json_decode($result, true);
-                 if ($result['resultCode'] == 0) {
+                 if (sanitize_text_field($result['resultCode']) == 0) {
 
                          $order->add_order_note(
-                             sprintf(__('Success: Refunded amount %1$s - Refund ID: %2$s', 'tino'), wc_price($amount), $result['transId']),
+                             sprintf(__('Success: Refunded amount %1$s - Refund ID: %2$s', 'tino'), wc_price($amount), sanitize_text_field($result['transId'])),
                              true
                          );
                          return true;
                  } else {
                      $order->add_order_note(
-                         sprintf(__('Error %1$s: Refunded amount %2$s - Refund ID: %3$s', 'tino'), esc_html($result['message']), wc_price($result['amount']), $result['transId'])
+                         sprintf(__('Error %1$s: Refunded amount %2$s - Refund ID: %3$s', 'tino'), esc_html($result['message']), wc_price(sanitize_text_field($result['amount'])), sanitize_text_field($result['transId']))
                      );
                      return false;
                  }
@@ -316,10 +316,10 @@
 
              $indata = $_GET;
 
-             if ($indata['orderId']) {
-                   $orderid = $this->momo_getInvoiceID($indata['orderId']);
+             if (sanitize_text_field($indata['orderId'])) {
+                   $orderid = $this->momo_getInvoiceID(sanitize_text_field($indata['orderId']));
                    $order = new WC_Order( $orderid );
-                   if ($indata['resultCode'] != 0) {
+                   if (sanitize_text_field($indata['resultCode']) != 0) {
                        $url = $order->get_checkout_payment_url();
                        wp_redirect($url);
                    } else {
@@ -338,18 +338,18 @@
               $verified = false;
               try {
                 if ($response) {
-                  $partnerCode = $response['partnerCode'];
-                  $orderId = $response['orderId'];
-                  $requestId = $response['requestId'];
-                  $amount = $response['amount'];
-                  $orderInfo = $response['orderInfo'];
-                  $orderType = $response['orderType'];
-                  $transId = $response['transId'];
-                  $resultCode = $response['resultCode'];
-                  $extraData = $response['extraData'];
-                  $message = $response['message'];
-                  $payType = $response['payType'];
-                  $responseTime = $response['responseTime'];
+                  $partnerCode = sanitize_text_field($response['partnerCode']);
+                  $orderId = sanitize_text_field($response['orderId']);
+                  $requestId = sanitize_text_field($response['requestId']);
+                  $amount = sanitize_text_field($response['amount']);
+                  $orderInfo = sanitize_text_field($response['orderInfo']);
+                  $orderType = sanitize_text_field($response['orderType']);
+                  $transId = sanitize_text_field($response['transId']);
+                  $resultCode = sanitize_text_field($response['resultCode']);
+                  $extraData = sanitize_text_field($response['extraData']);
+                  $message = sanitize_text_field($response['message']);
+                  $payType = sanitize_text_field($response['payType']);
+                  $responseTime = sanitize_text_field($response['responseTime']);
 
                   $rawHash =
                   "accessKey=" . $this->access_key .
@@ -375,11 +375,11 @@
                 }
                 if ($verified) {
 
-                    $orderid = $this->momo_getInvoiceID($response['orderId']);
+                    $orderid = $this->momo_getInvoiceID(sanitize_text_field($response['orderId']));
                     $order = new WC_Order( $orderid );
-                    $order->payment_complete(esc_html($response['transId']));
+                    $order->payment_complete(esc_html(sanitize_text_field($response['transId'])));
                     $order->reduce_order_stock();
-                    $order->add_order_note(esc_html($response['message']) . ' - Transaction id: ' .esc_html($response['transId']), true);
+                    $order->add_order_note(esc_html($response['message']) . ' - Transaction id: ' .sanitize_text_field($response['transId']), true);
 
                     return true;
                 }
