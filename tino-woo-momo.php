@@ -29,7 +29,6 @@
      $gateways[] = 'WC_Tino_Momo_Gateway'; // your class name is here
      return $gateways;
  }
-
  add_action('plugins_loaded', 'tino_momo_init_gateway_class');
  function tino_momo_init_gateway_class()
  {
@@ -38,24 +37,24 @@
          public function __construct()
          {
              $this->id = 'tino_momo'; // payment gateway plugin ID
-            $this->icon = ''; // URL of the icon that will be displayed on checkout page near your gateway name
-            $this->has_fields = true; // in case you need a custom credit card form
-            $this->method_title = 'Momo.vn Gateway';
-             $this->method_description = 'Description of Momo.vn payment gateway'; // will be displayed on the options page
+             $this->icon = ''; // URL of the icon that will be displayed on checkout page near your gateway name
+             $this->has_fields = true; // in case you need a custom credit card form
+             $this->method_title = 'Momo Gateway';
+             $this->method_description = 'Description of Momo payment gateway'; // will be displayed on the options page
 
              $this->supports = array(
                 'subscriptions',
-            'products',
-            'subscription_cancellation',
-            'subscription_reactivation',
-            'subscription_suspension',
-            'subscription_amount_changes',
-            'subscription_payment_method_change',
-            'subscription_date_changes',
-            'default_credit_card_form',
-            'refunds',
-            'pre-orders'
-            );
+                'products',
+                'subscription_cancellation',
+                'subscription_reactivation',
+                'subscription_suspension',
+                'subscription_amount_changes',
+                'subscription_payment_method_change',
+                'subscription_date_changes',
+                'default_credit_card_form',
+                'refunds',
+                'pre-orders'
+              );
 
              $this->init_form_fields();
 
@@ -234,10 +233,10 @@
                       'redirect' => $jsonResult['payUrl']
                   );
                  } else {
-                     $logger = wc_get_logger();
-                     $logger->debug($result, $context);
-                     $logger->info(json_encode($data), $context);
-                     wc_add_notice($jsonResult['message'] . ' Please try again.', 'error');
+                     // $logger = wc_get_logger();
+                     // $logger->debug($result, $context);
+                     // $logger->info(json_encode($data), $context);
+                     wc_add_notice(esc_html($jsonResult['message']) . ' Please try again.', 'error');
                      return;
                  }
              } else {
@@ -297,8 +296,8 @@
                  $result = $this->momo_execPostRequest($endpoint, json_encode($data));
                  $jsonResult =json_decode($result,true);  // decode json
                  if (is_wp_error($jsonResult)) {
-                     $logger = wc_get_logger();
-                     $logger->debug($result, $context);
+                     // $logger = wc_get_logger();
+                     // $logger->debug($result, $context);
                      return false;
                  }
                  $result = json_decode($result, true);
@@ -311,10 +310,10 @@
                          return true;
                  } else {
                      $order->add_order_note(
-                         sprintf(__('Error %1$s: Refunded amount %2$s - Refund ID: %3$s', 'tino'), $result['message'], wc_price($result['amount']), $result['transId'])
+                         sprintf(__('Error %1$s: Refunded amount %2$s - Refund ID: %3$s', 'tino'), esc_html($result['message']), wc_price($result['amount']), $result['transId'])
                      );
-                     $logger = wc_get_logger();
-                     $logger->debug($result, $context);
+                     // $logger = wc_get_logger();
+                     // $logger->debug($result, $context);
                      return false;
                  }
              } catch (Exception $e) {
@@ -326,12 +325,16 @@
          {
              global $woocommerce;
 
-             if ($_GET['orderId']) {
-                  $indata = $_GET;
+             $indata = $_GET;
+
+             if ($indata['orderId']) {
+
+
                    $orderid = $this->momo_getInvoiceID($indata['orderId']);
+
                    $order = new WC_Order( $orderid );
                    if ($indata['resultCode'] != 0) {
-                       $order->add_order_note(esc_html($indata['message']));
+                       // $order->add_order_note(esc_html($indata['message']));
                        $url = $order->get_checkout_payment_url();
                        wp_redirect($url);
                    } else {
@@ -348,8 +351,6 @@
              global $woocommerce;
 
              $response = json_decode(file_get_contents('php://input'), true);
-             $logger = wc_get_logger();
-             $logger->debug(json_encode($response));
 
               $return = [];
               $verified = false;
@@ -415,22 +416,42 @@
 
          public function momo_execPostRequest($url, $data)
          {
-             $ch = curl_init($url);
-             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-             curl_setopt(
-                 $ch,
-                 CURLOPT_HTTPHEADER,
-                 array(
-              'Content-Type: application/json',
-              'Content-Length: ' . strlen($data))
-             );
-             curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-             $result = curl_exec($ch);
-             curl_close($ch);
-             return $result;
+
+
+           $args = array(
+             'method'      => 'POST',
+            	'body'        => $data,
+            	'timeout'     => '10',
+            	'redirection' => '5',
+            	'httpversion' => '1.0',
+            	'blocking'    => true,
+            	'headers'     => array(
+                'Content-Type' => 'application/json',
+                'Content-Length' => strlen($data)
+              ),
+            	'cookies'     => array(),
+            );
+
+           $response = wp_remote_post( $url, $args );
+           return wp_remote_retrieve_body( $response );
+
+
+             // $ch = curl_init($url);
+             // curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+             // curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+             // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+             // curl_setopt(
+             //     $ch,
+             //     CURLOPT_HTTPHEADER,
+             //     array(
+             //  'Content-Type: application/json',
+             //  'Content-Length: ' . strlen($data))
+             // );
+             // curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+             // curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+             // $result = curl_exec($ch);
+             // curl_close($ch);
+             // return $result;
          }
 
          public function momo_genInvoiceID($invoiceId)
