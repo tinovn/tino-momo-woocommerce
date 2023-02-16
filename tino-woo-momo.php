@@ -314,10 +314,8 @@
          {
              global $woocommerce;
 
-             $indata = $_GET;
-
-             if (sanitize_text_field($indata['orderId'])) {
-                   $orderid = $this->momo_getInvoiceID(sanitize_text_field($indata['orderId']));
+             if (sanitize_text_field($_GET['orderId'])) {
+                   $orderid = $this->momo_getInvoiceID(sanitize_text_field($_GET['orderId']));
                    $order = new WC_Order( $orderid );
                    if (sanitize_text_field($indata['resultCode']) != 0) {
                        $url = $order->get_checkout_payment_url();
