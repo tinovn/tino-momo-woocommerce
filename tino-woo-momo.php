@@ -79,7 +79,7 @@
              $this->form_fields = array(
                 'enabled' => array(
                     'title'       => 'Enable/Disable',
-                    'label'       => 'Enable Momo.vn Gateway',
+                    'label'       => 'Enable Momo Gateway',
                     'type'        => 'checkbox',
                     'description' => '',
                     'default'     => 'no'
@@ -193,8 +193,6 @@
            $orderGroupId ='';
            $autoCapture = true;
            $lang = 'vi';
-
-
            $rawHash =
            "accessKey=" . $accessKey .
            "&amount=" . $amount .
@@ -226,16 +224,13 @@
            );
            $result = $this->momo_execPostRequest($endpoint, json_encode($data));
              if (!is_wp_error($result)) {
-                 $jsonResult =json_decode($result, true);  // decode json
+                 $jsonResult =json_decode($result, true);
                  if ($jsonResult['errorCode'] == 0) {
                      return array(
                       'result' => 'success',
                       'redirect' => $jsonResult['payUrl']
                   );
                  } else {
-                     // $logger = wc_get_logger();
-                     // $logger->debug($result, $context);
-                     // $logger->info(json_encode($data), $context);
                      wc_add_notice(esc_html($jsonResult['message']) . ' Please try again.', 'error');
                      return;
                  }
@@ -267,10 +262,7 @@
              $requestId = time()."";
              $requestType = 'refundMoMoWallet';
              $orderInfo = "Hoàn tiền đơn hàng ". $order_id;
-
-
               $transId = $transaction_id;
-
               $description = 'Hoàn tiền giao dịch ' .$transId  . ' của hoá đơn ' . $orderId;
               $rawHash =
                 "accessKey=" . $accessKey .
@@ -294,10 +286,9 @@
               );
              try {
                  $result = $this->momo_execPostRequest($endpoint, json_encode($data));
-                 $jsonResult =json_decode($result,true);  // decode json
+                 $jsonResult =json_decode($result,true);
                  if (is_wp_error($jsonResult)) {
-                     // $logger = wc_get_logger();
-                     // $logger->debug($result, $context);
+
                      return false;
                  }
                  $result = json_decode($result, true);
@@ -312,8 +303,6 @@
                      $order->add_order_note(
                          sprintf(__('Error %1$s: Refunded amount %2$s - Refund ID: %3$s', 'tino'), esc_html($result['message']), wc_price($result['amount']), $result['transId'])
                      );
-                     // $logger = wc_get_logger();
-                     // $logger->debug($result, $context);
                      return false;
                  }
              } catch (Exception $e) {
@@ -328,13 +317,9 @@
              $indata = $_GET;
 
              if ($indata['orderId']) {
-
-
                    $orderid = $this->momo_getInvoiceID($indata['orderId']);
-
                    $order = new WC_Order( $orderid );
                    if ($indata['resultCode'] != 0) {
-                       // $order->add_order_note(esc_html($indata['message']));
                        $url = $order->get_checkout_payment_url();
                        wp_redirect($url);
                    } else {
@@ -342,22 +327,17 @@
                        $order->add_order_note(__('The order process was successful. Waiting for payment confirmation', 'tino'), true);
                        wp_redirect($this->get_return_url($order));
                    }
-
              }
          }
 
          public function webhook_callback()
          {
              global $woocommerce;
-
              $response = json_decode(file_get_contents('php://input'), true);
-
               $return = [];
               $verified = false;
-
               try {
                 if ($response) {
-
                   $partnerCode = $response['partnerCode'];
                   $orderId = $response['orderId'];
                   $requestId = $response['requestId'];
@@ -385,15 +365,12 @@
                   "&responseTime=" . $responseTime .
                   "&resultCode=" . $resultCode .
                   "&transId=" . $transId;
-
                   $signature = hash_hmac("sha256", $rawHash, $this->secret_key);
-
                  if (strcmp($signature, $response['signature']) == 0) {
 
                    if ($resultCode == 0) {
                      $verified = true;
                    }
-
                  }
                 }
                 if ($verified) {
@@ -406,8 +383,6 @@
 
                     return true;
                 }
-
-
               } catch (\Exception $e) {
                 echo "bug";
               }
@@ -416,8 +391,6 @@
 
          public function momo_execPostRequest($url, $data)
          {
-
-
            $args = array(
              'method'      => 'POST',
             	'body'        => $data,
@@ -431,27 +404,8 @@
               ),
             	'cookies'     => array(),
             );
-
            $response = wp_remote_post( $url, $args );
            return wp_remote_retrieve_body( $response );
-
-
-             // $ch = curl_init($url);
-             // curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-             // curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-             // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-             // curl_setopt(
-             //     $ch,
-             //     CURLOPT_HTTPHEADER,
-             //     array(
-             //  'Content-Type: application/json',
-             //  'Content-Length: ' . strlen($data))
-             // );
-             // curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-             // curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-             // $result = curl_exec($ch);
-             // curl_close($ch);
-             // return $result;
          }
 
          public function momo_genInvoiceID($invoiceId)
