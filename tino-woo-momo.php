@@ -228,7 +228,7 @@
                  if ($jsonResult['errorCode'] == 0) {
                      return array(
                       'result' => 'success',
-                      'redirect' => $jsonResult['payUrl']
+                      'redirect' => esc_url($jsonResult['payUrl'])
                   );
                  } else {
                      wc_add_notice(esc_html($jsonResult['message']) . ' Please try again.', 'error');
