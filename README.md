@@ -1,4 +1,4 @@
-# Plugin Name:  Momo.vn Payment Gateway for WooCommerce
+# Plugin Name:  MoMo Payment Gateway for WooCommerce
 
 Plugin URI: https://wiki.tino.org/plugins/momo-payment-gateway-for-woocommerce
 Description: Pugin Payment Gateway Mo Mo - Tài khoản doanh nghiệp. API v2
