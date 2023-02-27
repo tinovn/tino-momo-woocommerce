@@ -31,7 +31,6 @@ Như vậy, là bạn đã kết nối thành công với MoMo.
 
 
 
- 
 
 == Frequently Asked Questions ==
 
@@ -50,6 +49,10 @@ Hãy truy cập https://tinohost.com :)
 3. screenshot-3.png Quét mã thanh toán
 4. screenshot-4.png Xử lý đơn hàng với giao dịch MoMo
  
+
+== Upgrade Notice ==
+
+Not released yet.
 
 == Changelog ==
 
