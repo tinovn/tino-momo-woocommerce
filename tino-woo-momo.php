@@ -1,6 +1,6 @@
 <?php
   /*
-  Plugin Name:  Pugin Payment Gateway Mo Mo for WooCommerce
+  Plugin Name:  Payment Gateway Mo Mo for WooCommerce
   Plugin URI: https://wiki.tino.org/plugins/momo-payment-gateway-for-woocommerce
   Description: Pugin Payment Gateway Mo Mo - Tài khoản doanh nghiệp. API v2
   Contributors: Tran Binh, Webico, TinoHost
