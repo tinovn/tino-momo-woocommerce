@@ -1,4 +1,5 @@
-=== Mo Mo Payment Gateway for WooCommerce ===
+Mo Mo Payment Gateway for WooCommerce
+
 Contributors: tranbinhcse
 Donate link: https://tinohost.com/
 Tags: momo, momo payment, tinohost, tino
