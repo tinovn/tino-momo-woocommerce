@@ -1,14 +1,23 @@
 Mo Mo Payment Gateway for WooCommerce
 
 Contributors: tranbinhcse
+
 Donate link: https://tinohost.com/
+
 Tags: momo, momo payment, tinohost, tino
+
 Requires at least: 4.7
+
 Tested up to: 6.1.1
+
 Stable tag: 1.0.0
+
 Requires PHP: 7.4
+
 License: GPLv2 or later
+
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
 
 Plugin tích hợp thanh toán qua ví điện tử momo cho WooCommerce
 
@@ -20,9 +29,13 @@ Plugin tích hợp thanh toán qua ví điện tử momo cho WooCommerce bằng 
 
 Sau khi đăng ký tài khoản thành công,
 Bạn sẽ được cấp thông tin kết nối bao gồm:
+
 Partner ID:
+
 Access Key:
+
 Secert Key:
+
 
 1. Tải và cài đặt plugin này.
 2. Truy cập Setting -> WooCommerce -> Setting -> Payment.
