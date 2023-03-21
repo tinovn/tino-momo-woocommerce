@@ -9,7 +9,7 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Plugin tích hợp thanh toán qua ví điện tử cho WooCommerce
+Plugin tích hợp thanh toán qua ví điện tử momo cho WooCommerce
 
 == Description ==
 
