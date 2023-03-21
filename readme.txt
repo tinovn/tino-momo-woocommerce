@@ -13,7 +13,7 @@ Plugin tích hợp thanh toán qua ví điện tử cho WooCommerce
 
 == Description ==
 
-Plugin tích hợp thanh toán qua ví điện tử cho WooCommerce bằng tài khoản doanh nghiệp.
+Plugin tích hợp thanh toán qua ví điện tử momo cho WooCommerce bằng tài khoản doanh nghiệp.
 
 Để sử dụng được plugin này, bạn cần đăng ký tài khoản MoMo doanh nghiệp tại đây: https://momo.vn/
 
