@@ -1,4 +1,4 @@
-Mo Mo Payment Gateway for WooCommerce
+Tino momo Payment Gateway for WooCommerce
 
 Contributors: tranbinhcse
 
